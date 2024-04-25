@@ -26,6 +26,11 @@ public class UserEntity {
     private String joinPath;
 
     public UserEntity (SignUpRequestDto dto) {
+        this.userId = dto.getUserId();
+        this.userPassword = dto.getUserPassword();
+        this.userEmail = dto.getUserEmail();
+        this.userRole = "ROLE_USER";
+        this.joinPath = "HOME";
 
     }
 }
