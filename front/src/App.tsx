@@ -10,9 +10,10 @@ function App() {
       <Route path={SERVICE_PATH} element={<></>} >
         <Route path={LOCAL_PATH} element={<></>} />
         <Route path={RATIO_PATH} element={<></>} />
-        <Route path={QNA_PATH} element={<></>} >
-          <Route path={QNA_DETAIL_PATH} element={<></>} />
+        <Route path={QNA_PATH} >
+          <Route index element={<></>} />
           <Route path={QNA_WRITE_PATH} element={<></>} />
+          <Route path={QNA_DETAIL_PATH} element={<></>} />
           <Route path={QNA_UPDATE_PATH} element={<></>} />
         </Route>
       </Route>
