@@ -74,7 +74,7 @@ function SignIn({ onLinkClickHandler }: Props) {
 
         const { accessToken, expires } = result as SignInResponseDto;
         const expiration = new Date(Date.now() + (expires * 1000));
-        setCookie('accessToken', accessToken, { expires: expiration });
+        setCookie('accessToken', accessToken, { path: '/', expires: expiration });
 
         navigator(LOCAL_ABSOLUTE_PATH);
     };
@@ -376,7 +376,7 @@ export default function Authentication() {
 
     //                    event handler                    //
     const onLinkClickHandler = () => {
-        if (page === 'sign-in') setPage('sign-up');
+        if (page === 'sign-in') setPage('sign-in');
         else setPage('sign-in');
     };
 
