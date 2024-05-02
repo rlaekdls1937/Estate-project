@@ -19,7 +19,7 @@ public class BoardListItem {
     private Integer viewCount;
 
     private BoardListItem(BoardEntity boardEntity) throws Exception {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date datetime = simpleDateFormat.parse(boardEntity.getWriteDatetime());
         simpleDateFormat = new SimpleDateFormat("yy.MM.dd");
         String writeDatetime = simpleDateFormat.format(datetime);
@@ -32,8 +32,8 @@ public class BoardListItem {
         this.receptionNumber = boardEntity.getReceptionNumber();
         this.status = boardEntity.getStatus();
         this.title = boardEntity.getTitle();
-        this.writerId = "";
-        this.writeDatetime= "";
+        this.writerId = writerId;
+        this.writeDatetime= writeDatetime;
         this.viewCount= boardEntity.getViewCount();
     }
     
@@ -44,6 +44,7 @@ public class BoardListItem {
             BoardListItem boardListItem = new BoardListItem(boardEntity);
             boardList.add(boardListItem);
         }
+        
         return  boardList;
     }
 }
