@@ -14,22 +14,22 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class BoardServiceImplementation implements BoardService{
+public class BoardServiceImplementation implements BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
     @Override
     public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto, String userId) {
-
+        
         try {
 
-            boolean isExistUser = userRepository.existsById(userId);
+            boolean isExistUser = userRepository.existsByUserId(userId);
             if (!isExistUser) return ResponseDto.authenticationFailed();
 
             BoardEntity boardEntity = new BoardEntity(dto, userId);
             boardRepository.save(boardEntity);
-            
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
@@ -38,4 +38,5 @@ public class BoardServiceImplementation implements BoardService{
         return ResponseDto.success();
 
     }
+    
 }
