@@ -92,6 +92,8 @@ export default function ServiceContainer() {
     const [path, setPath] = useState<Path>('');
 
     //                    function                     //
+    const navigator = useNavigate();
+
     const getSignInUserResponse = (result: GetSignInUserResponseDto | ResponseDto | null) => {
 
         const message = 
@@ -100,7 +102,8 @@ export default function ServiceContainer() {
             result.code === 'DBE' ? '서버에 문제가 있습니다.' : ''; 
 
         if (!result || result.code !== 'SU') {
-            alert(message);
+            alert(message); 
+            navigator(AUTH_ABSOLUTE_PATH);
             return;
         } 
 
@@ -123,6 +126,7 @@ export default function ServiceContainer() {
     useEffect(() => {
 
         if (!cookies.accessToken) {
+        navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
 
