@@ -7,7 +7,7 @@ export default function QnaDetail() {
     //                      render                       //
     return (
     <div id='qna-detail-wrapper'>
-        <div className='`qna-detail-main-box'>
+        <div className='qna-detail-main-box'>
             <div className='qna-detail-top-box'>
                 <div className='qna-detail-title-box'>제목입니다.</div>
                 <div className='qna-detail-info-box'>
@@ -30,7 +30,7 @@ export default function QnaDetail() {
             <div className='primary-bedge'>답변</div>
             <div className='qna-detail-comment'>답변입니다.</div>
         </div>
-        <div className='`qna-detail-button-box'>
+        <div className='qna-detail-button-box'>
             <div className='primary-button'>목록보기</div>
             <div className='qna-detail-owner-button-box'>
                 <div className='second-button'>수정</div>

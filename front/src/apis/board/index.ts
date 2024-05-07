@@ -44,5 +44,4 @@ export const increaseViewCountRequest = async (receptionNumber: number | string,
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
     return result;
-
 };
