@@ -15,6 +15,7 @@ import com.estate.back.repository.BoardRepository;
 import com.estate.back.repository.UserRepository;
 import com.estate.back.service.BoardService;
 
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -106,6 +107,32 @@ public class BoardServiceImplementation implements BoardService {
 
         return ResponseDto.success();
 
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> postComment(com.estate.back.dto.request.board.PostCommentRequestDto dto, int receptionNumber) {
+        
+        try {
+            
+            BoardEntity boardEntity = boardRepository.findByReceptionNumber(receptionNumber);
+            if (boardEntity == null) return ResponseDto.noExistBoard();
+
+            boolean status = boardEntity.getStatus();
+            if(status) return ResponseDto.writtenComment();
+
+            String comment = dto.getComment();
+            boardEntity.setStatus(true);
+            boardEntity.setComment(comment);
+
+            boardRepository.save(boardEntity);
+
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ResponseDto.success();
     }
     
 }
