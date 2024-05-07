@@ -95,7 +95,6 @@ public class BoardServiceImplementation implements BoardService {
             BoardEntity boardEntity = boardRepository.findByReceptionNumber(receptionNumber);
             if (boardEntity == null) return ResponseDto.noExistBoard();
 
-            boardEntity.increaseViewCount();
 
             boardEntity.increaseViewCount();
             boardRepository.save(boardEntity);
