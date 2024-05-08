@@ -29,10 +29,10 @@ export const getBoardListRequest = async (accessToken: string) => {
     return result;
 };
 
-// function: Q&A 전체 리스트 불러오기 API 함수 
-export const getSearchBoardListRequest = async (searchWord: string, accessToken:string) => {
-    const result = await axios.get(GET_SEARCH_BOARD_LIST_URL(searchWord),
-    bearerAuthorization(accessToken))
+// function: Q&A 검색 리스트 불러오기 API 함수 
+export const getSearchBoardListRequest = async (word: string, accessToken:string) => {
+    const config = { ...bearerAuthorization(accessToken), params: { word } };
+    const result = await axios.get(GET_SEARCH_BOARD_LIST_URL,config)
         .then(requestHandler<GetSearchBoardListResponseDto>)
         .catch(requestErrorHandler);
     return result;
@@ -47,7 +47,7 @@ export const getBoardRequest = async (receptionNumber: number | string, accessTo
 };
 
 // function: Q&A 게시물 수정 API 함수 
-export const putBoardRequest = async (receptionNumber: number| string, requestBody: PutBoardRequestDto, accessToken: string) => {
+export const putBoardRequest = async (receptionNumber: number | string, requestBody: PutBoardRequestDto, accessToken: string) => {
     const result = await axios.put(PUT_BOARD_URL(receptionNumber), requestBody, bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler)

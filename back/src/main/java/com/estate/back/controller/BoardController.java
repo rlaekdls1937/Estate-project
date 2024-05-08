@@ -22,6 +22,7 @@ import com.estate.back.dto.response.board.GetSearchBoardListResponseDto;
 import com.estate.back.service.BoardService;
 
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -55,11 +56,11 @@ public class BoardController {
         return response;
     }
 
-    @GetMapping("/list/{searchWord}")
+    @GetMapping("/list/search")
     public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(
-        @PathVariable("searchWord") String searchWord
+        @PathParam("Word") String word
     ) {
-        ResponseEntity<? super GetSearchBoardListResponseDto> response = boardService.GetSearchBoardList(searchWord);
+        ResponseEntity<? super GetSearchBoardListResponseDto> response = boardService.GetSearchBoardList(word);
         return response;
     }
 
