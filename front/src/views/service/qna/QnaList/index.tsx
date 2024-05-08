@@ -116,8 +116,9 @@ export default function QnaList() {
         const { boardList } = result as GetBoardListResponseDto;
         changeBoardList(boardList);
 
-        setCurrentPage(1);
-        setCurrentSection(1);
+        
+        setCurrentPage(!boardList.length ? 0 : 1);
+        setCurrentSection(!boardList.length ? 0 : 1);
     };
 
     const getSearchBoardListResponse = (result: GetSearchBoardListResponseDto | ResponseDto | null) => {
@@ -136,8 +137,8 @@ export default function QnaList() {
 
         const { boardList } = result as GetSearchBoardListResponseDto;
         changeBoardList(boardList);
-        setCurrentPage(1);
-        setCurrentSection(1);
+        setCurrentPage(!boardList.length ? 0 : 1);
+        setCurrentSection(!boardList.length ? 0 : 1);
 
     };
 
@@ -157,7 +158,7 @@ export default function QnaList() {
     };
 
     const onPreSectionClickHandler = () => {
-        if (currentSection === 1) return;
+        if (currentSection <= 1) return;
         setCurrentSection(currentSection - 1); 
         setCurrentPage((currentSection - 1) * COUNT_PER_SECTION);
     };
@@ -201,7 +202,7 @@ export default function QnaList() {
     return (
         <div id='qna-list-wrapper'>
             <div className='qna-list-top'>
-                <div className='qna-list-size-text'>전체 <span className='emphasis'>{totalLength}건</span> | 페이지 <span className='emphasis'>{currentPage}</span></div>
+                <div className='qna-list-size-text'>전체 <span className='emphasis'>{totalLength}건</span> | 페이지 <span className='emphasis'>{currentPage}/{totalPage}</span></div>
                 <div className='qna-list-top-right'>
                     {loginUserRole === 'ROLE_USER' ?
                     <div className='primary-button' onClick={onWriteButtonClickHandler}>글쓰기</div> : 
