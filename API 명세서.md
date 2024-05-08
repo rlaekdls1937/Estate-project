@@ -1436,3 +1436,287 @@ Content-Type: application/json;charset=UTF-8
 ```
 
 *** 
+
+#### - Q&A 게시물 삭제
+  
+##### 설명
+
+클라이언트로부터 Request Header의 Authorization 필드로 Bearer 토큰을 포함하여 접수번호를 입력받고 요청을 보내면 해당하는 Q&A 게시물이 삭제됩니다. 만약 삭제에 실패하면 실패처리를 합니다. 인가 실패, 데이터베이스 에러가 발생할 수 있습니다.
+
+
+- method : **DELETE**  
+- URL : **/{receptionNumber}**  
+
+##### Request
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Authorization | 인증에 사용될 Bearer 토큰 | O |
+
+###### Request Body 
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| contents | String | Q&A 내용 | O |
+
+###### Example
+
+```bash
+curl -v -X POST"http://localhost:4000/api/v1/board/${receptionNumber}" \
+ -H "Authorization: Bearer {JWT}"
+```
+
+##### Response
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Content-Type | 반환하는 Response Body의 Content Type (application/json) | O |
+
+###### Response Body
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| code | String | 결과 코드 | O |
+| message | String | 결과 메세지 | O |
+
+
+**BoardListItem**
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| receptionNumber | int | 접수 번호 | O |
+| status | boolean | 상태 | O |
+| title | string | 제목 | 0 |
+| writerId | string | 작성자 아이디| 0 |
+| writeDatetime | string | 작성일</br>(yy.mm.dd 형태) | 0 |
+| viewCount | int | 조회수 | 0 |
+| contents | String | 내용 | 0 | 
+| comment | String | 내용 | X | 
+
+###### Example
+
+**응답 성공**
+```bash
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "SU",
+  "message": "Success.",
+  "receptionNUmber" : ${receptionNumber},
+  "status": ${status},
+  "title": ${title},
+  "writerId": ${writerId},
+  "writerDatetime": ${writeDatetime},
+  "viewCount": ${viewCount},
+  "contents": ${contents},
+  "comment": ${comment}
+}
+```
+
+**응답 : 실패 (데이터 유효성 검사 실패)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "VF",
+  "message": "validation Failed."
+}
+```
+
+**응답 : 실패 (존재하지 않는 게시물)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "NB",
+  "message": "No Exist Board."
+}
+```
+
+**응답 : 실패 (인가 실패)**
+```bash
+HTTP/1.1 403 Forbidden
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "AF",
+  "message": "Authorization Failed."
+}
+```
+
+
+**응답 : 실패 (데이터베이스 오류)**
+```bash
+HTTP/1.1 500 Internal Server Error
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "DBE",
+  "message": "Database Error."
+}
+```
+
+*** 
+
+#### - Q&A 게시물 수정
+  
+##### 설명
+
+
+클라이언트로부터 Request Header의 Authorization 필드로 Bearer 토큰을 포함하여 접수 번호, 제목, 내용을 입력받고 수정에 성공하면 성공처리를 합니다. 만약 수정에 실패하면 실패처리 됩니다. 인가 실패, 데이터베이스 에러, 데이터 유효성 검사 실패가 발생할 수 있습니다.
+
+
+- method : **PUT**  
+- URL : **/{receptionNumber}**  
+
+##### Request
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Authorization | 인증에 사용될 Bearer 토큰 | O |
+
+###### Request Body 
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| receptionNumber | int | 수정할 접수 번호 | O |
+
+###### Request Body 
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| title | String | Q&A 제목 | O |
+| contents | String | Q&A 내용 | O |
+
+###### Example
+
+```bash
+curl -v -X PUT "http://localhost:4000/api/v1/board/${receptionNumber}" \
+ -H "Authorization: Bearer {JWT}"
+ -d "title={title}" \
+ -d "contents={contents}
+```
+
+##### Response
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Content-Type | 반환하는 Response Body의 Content Type (application/json) | O |
+
+###### Response Body
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| code | String | 결과 코드 | O |
+| message | String | 결과 메세지 | O |
+
+
+**BoardListItem**
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| receptionNumber | int | 접수 번호 | O |
+| status | boolean | 상태 | O |
+| title | string | 제목 | 0 |
+| writerId | string | 작성자 아이디| 0 |
+| writeDatetime | string | 작성일</br>(yy.mm.dd 형태) | 0 |
+| viewCount | int | 조회수 | 0 |
+| contents | String | 내용 | 0 | 
+| comment | String | 내용 | X | 
+
+###### Example
+
+**응답 성공**
+```bash
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "SU",
+  "message": "Success.",
+  "receptionNUmber" : ${receptionNumber},
+  "status": ${status},
+  "title": ${title},
+  "writerId": ${writerId},
+  "writerDatetime": ${writeDatetime},
+  "viewCount": ${viewCount},
+  "contents": ${contents},
+  "comment": ${comment}
+}
+```
+
+**응답 : 실패 (데이터 유효성 검사 실패)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "VF",
+  "message": "validation Failed."
+}
+```
+
+**응답 : 실패 (존재하지 않는 게시물)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "NB",
+  "message": "No Exist Board."
+}
+```
+
+**응답 : 실패 (인가 실패)**
+```bash
+HTTP/1.1 403 Forbidden
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "AF",
+  "message": "Authorization Failed."
+}
+```
+
+**응답 : 실패 (존재하지 않는 게시물)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "NB",
+  "message": "No Exist Board."
+}
+```
+
+**응답 : 실패 (답변 완료된 게시물)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "WC",
+  "message": "Written Comment."
+}
+```
+
+**응답 : 실패 (권한 없음)**
+```bash
+HTTP/1.1 403 Forbidden
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "AF",
+  "message": "Authorization Failed."
+}
+```
+
+
+**응답 : 실패 (데이터베이스 오류)**
+```bash
+HTTP/1.1 500 Internal Server Error
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "DBE",
+  "message": "Database Error."
+}
+```
+
+*** 

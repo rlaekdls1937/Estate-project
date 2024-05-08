@@ -20,6 +20,7 @@ public interface ResponseCode {
     String WRITTEN_COMMENT = "WC";
     String SIGN_IN_FAILED = "SF";
     String AUTHENTICATION_FAILED = "AF";
+    String AUTHORIZATION_FAILED = "AF" ;
     String TOKEN_CREATION_FAILED = "TF";
     String MAIL_SEND_FAILED = "MF";
     String DATABASE_ERROR = "DBE";

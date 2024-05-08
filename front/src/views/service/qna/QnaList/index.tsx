@@ -85,6 +85,7 @@ export default function QnaList() {
     };
 
     const changeBoardList = (boardList: BoardListItem[]) => {
+        if (isToggleOn) boardList = boardList.filter(board => !board.status);
         setBoardList(boardList);
 
         const totalLength = boardList.length;
@@ -114,6 +115,9 @@ export default function QnaList() {
 
         const { boardList } = result as GetBoardListResponseDto;
         changeBoardList(boardList);
+
+        setCurrentPage(1);
+        setCurrentSection(1);
     };
 
     const getSearchBoardListResponse = (result: GetSearchBoardListResponseDto | ResponseDto | null) => {
@@ -134,7 +138,6 @@ export default function QnaList() {
         changeBoardList(boardList);
         setCurrentPage(1);
         setCurrentSection(1);
-
 
     };
 
@@ -181,7 +184,7 @@ export default function QnaList() {
     useEffect(() => {
         if (!cookies.accessToken) return;
         getBoardListRequest(cookies.accessToken).then(getBoardListResponse);
-    },[]);
+    },[isToggleOn]);
 
     useEffect(() => {
         changePage(boardList, totalLength);
