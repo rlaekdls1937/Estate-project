@@ -20,41 +20,14 @@ export default function Local() {
 
     const saleOptions = {
         responsive: false,
-        scales: {
-            y: {
-                min: 50000,
-                max: 300000,
-                ticks: {
-                    stepSize: 50000
-                }
-            }
-        }
     };
 
     const leaseOptions = {
         responsive: false,
-        scales: {
-            y: {
-                min: 50000,
-                max: 300000,
-                ticks: {
-                    stepSize: 50000
-                }
-            }
-        }
     };
 
     const monthRentOptions = {
         responsive: false,
-        scales: {
-            y: {
-                min: 50000,
-                max: 300000,
-                ticks: {
-                    stepSize: 50000
-                }
-            }
-        }
     };
 
     //                      state                      //
