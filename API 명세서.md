@@ -912,7 +912,7 @@ findByTitleContainsOrderByReceptionNumberDesc();
 
 
 - method : **GET**  
-- URL : **/list/{searchWord}**  
+- URL : **/list/search**  
 
 ##### Request
 
@@ -934,7 +934,7 @@ findByTitleContainsOrderByReceptionNumberDesc();
 ###### Example
 
 ```bash
-curl -v -X GET "http://localhost:4000/api/v1/board/list/${searchWord}" \
+curl -v -X GET "http://localhost:4000/api/v1/board/search?word=${searchWord}" \
  -H "Authorization: Bearer {JWT}"
 ```
 
