@@ -1718,5 +1718,299 @@ Content-Type: application/json;charset=UTF-8
   "message": "Database Error."
 }
 ```
+<h2 style='background-color: rgba(55, 55, 55, 0.2); text-align: center'>Estate 모듈</h2>
+
+오피스텔 부동산 가격 정보와 관련된 REST API 모듈  
+지역 평균 데이터, 비율 관련 데이터 API가 포함되어 있습니다.  
+  
+- url : /api/v1/auth  
+
+*** 
+
+#### -지역 평균 데이터 불러오기
+  
+##### 설명
+
+
+클라이언트로부터 Request Header의 Authorization 필드로 Bearer 토큰을 포함하여 지역을 입력받고 불러오기에 성공하면 성공처리를 합니다. (매매가, 전세가, 월세 보증금 데이터의 단위는 천원 단위) 만약 불러오기에 실패하면 실패처리 됩니다. 인가 실패, 데이터베이스 에러, 데이터 유효성 검사 실패가 발생할 수 있습니다.
+
+- method : **GET**  
+- URL : **/local{local}**  
+
+##### Request
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Authorization | 인증에 사용될 Bearer 토큰 | O |
+
+###### Path Body 
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| local | string | 조회할 지역 | O |
+
+
+###### Example
+
+```bash
+curl -v -X PUT "http://localhost:4000/api/v1/estate/local/{local}" \
+ -H "Authorization: Bearer {JWT}"
+```
+
+###### Response Body
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| code | String | 결과 코드 | O |
+| message | String | 결과 메세지 | O |
+| yearMonth | String | 결과 메세지 | O |
+| sale | int[] | 매매가 리스트 | O |
+| lease | int[] | 전세가 리스트 | O |
+| monthRent | int[] | 월세 보증금 리스트 | O |
+
+
+###### Example
+
+**응답 성공**
+```bash
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "SU",
+  "message": "Success.",
+  "yearMonth": ['23-01','23-02','23-03', ... , '23-12'],
+  "sale": [4525, 4855, 4755, ... ,4621],
+  "lease": [4525, 4855, 4755, ... ,4621],
+  "monthRent": [4525, 4855, 4755, ... ,4621],
+}
+```
+
+**응답 : 실패 (데이터 유효성 검사 실패)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "VF",
+  "message": "validation Failed."
+}
+```
+
+**응답 : 실패 (존재하지 않는 게시물)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "NB",
+  "message": "No Exist Board."
+}
+```
+
+**응답 : 실패 (인가 실패)**
+```bash
+HTTP/1.1 403 Forbidden
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "AF",
+  "message": "Authorization Failed."
+}
+```
+
+**응답 : 실패 (존재하지 않는 게시물)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "NB",
+  "message": "No Exist Board."
+}
+```
+
+**응답 : 실패 (답변 완료된 게시물)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "WC",
+  "message": "Written Comment."
+}
+```
+
+**응답 : 실패 (권한 없음)**
+```bash
+HTTP/1.1 403 Forbidden
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "AF",
+  "message": "Authorization Failed."
+}
+```
+
+
+**응답 : 실패 (데이터베이스 오류)**
+```bash
+HTTP/1.1 500 Internal Server Error
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "DBE",
+  "message": "Database Error."
+}
+```
+
+*** 
+
+#### - 비율 데이터 불러오기
+  
+##### 설명
+
+
+클라이언트로부터 Request Header의 Authorization 필드로 Bearer 토큰을 포함하여 지역을 입력받고 불러오기에 성공하면 성공처리를 합니다. (날짜 데이터를 제외한 모든 단위는 백분율 단위) 만약 불러오기에 실패하면 실패처리 됩니다. 인가 실패, 데이터베이스 에러, 데이터 유효성 검사 실패가 발생할 수 있습니다.
+
+- method : **GET**  
+- URL : **/ratio{local}**  
+
+##### Request
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Authorization | 인증에 사용될 Bearer 토큰 | O |
+
+###### Path Body 
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| local | string | 조회할 지역 | O |
+
+
+###### Example
+
+```bash
+curl -v -X PUT "http://localhost:4000/api/v1/estate/local/{local}" \
+ -H "Authorization: Bearer {JWT}"
+```
+
+###### Response Body
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| code | String | 결과 코드 | O |
+| message | String | 결과 메세지 | O |
+| yearMonth | String | 연월 리스트 | O |
+| return40 | double[] | 40m2 이하 수익률 리스트 | O |
+| return4060 | double[] | 40m2 초과 60m2 이하 수익률 리스트 | O |
+| return6085 | double[] | 60m2 초과 85m2 이하 수익률 리스트 | O |
+| return85 | double[] | 85m2 초과 수익률 리스트 | O |
+
+| leaseRatio40 | double[] | 40m2 이하 매매가 대비 전세가 비율 리스트 | O |
+| leaseRatio4060 | double[] | 40m2 초과 60m2 이하 매매가 대비 전세가 비율 리스트 | O |
+| leaseRatio6085 | double[] | 60m2 초과 85m2 이하 매매가 대비 전세가 비율 리스트 | O |
+| leaseRatio85 | double[] | 85m2 초과 매매가 대비 전세가 비율 리스트 | O |
+
+| monthRentRatio40 | double[] | 40m2 이하 전세가 대비 월세 보증금 비율 리스트 | O |
+| monthRentRatio4060 | double[] | 40m2 초과 60m2 이하 전세가 대비 월세 보증금 비율 리스트 | O |
+| monthRentRatio6085 | double[] | 60m2 초과 85m2 이하 전세가 대비 월세 보증금 비율 리스트 | O |
+| monthRentRatio85 | double[] | 85m2 초과 전세가 대비 월세 보증금 비율 리스트 | O |
+
+
+###### Example
+
+**응답 성공**
+```bash
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "SU",
+  "message": "Success.",
+  "yearMonth": ['23-01','23-02','23-03', ... , '23-12'],
+  "return40" : [10.4, 11.1 ,10.0, ..., 9.8],
+  "return4060" : [10.4, 11.1 ,10.0, ..., 9.8],
+  "return6085" : [10.4, 11.1 ,10.0, ..., 9.8],
+  "return85" : [10.4, 11.1 ,10.0, ..., 9.8],
+
+  "leaseRatio40" : [10.4, 11.1 ,10.0, ..., 9.8],
+  "leaseRatio4060" : [10.4, 11.1 ,10.0, ..., 9.8],
+  "leaseRatio6085" : [10.4, 11.1 ,10.0, ..., 9.8],
+  "leaseRatio85" : [10.4, 11.1 ,10.0, ..., 9.8],
+
+  "monthRentRatio40" : [10.4, 11.1 ,10.0, ..., 9.8],
+  "monthRentRatio4060" : [10.4, 11.1 ,10.0, ..., 9.8],
+  "monthRentRatio6085" : [10.4, 11.1 ,10.0, ..., 9.8],
+  "monthRentRatio85" : [10.4, 11.1 ,10.0, ..., 9.8],
+}
+```
+
+**응답 : 실패 (데이터 유효성 검사 실패)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "VF",
+  "message": "validation Failed."
+}
+```
+
+**응답 : 실패 (존재하지 않는 게시물)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "NB",
+  "message": "No Exist Board."
+}
+```
+
+**응답 : 실패 (인가 실패)**
+```bash
+HTTP/1.1 403 Forbidden
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "AF",
+  "message": "Authorization Failed."
+}
+```
+
+**응답 : 실패 (존재하지 않는 게시물)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "NB",
+  "message": "No Exist Board."
+}
+```
+
+**응답 : 실패 (답변 완료된 게시물)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "WC",
+  "message": "Written Comment."
+}
+```
+
+**응답 : 실패 (권한 없음)**
+```bash
+HTTP/1.1 403 Forbidden
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "AF",
+  "message": "Authorization Failed."
+}
+```
+
+
+**응답 : 실패 (데이터베이스 오류)**
+```bash
+HTTP/1.1 500 Internal Server Error
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "DBE",
+  "message": "Database Error."
+}
+```
 
 *** 
