@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
-import './style.css'
+import React, { useState } from 'react';
+import './style.css';
 import SelectBox from 'src/components/SelectBox';
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LineElement, LinearScale, PointElement, Tooltip } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
 import { useCookies } from 'react-cookie';
-import { GetRatioDataResponseDto } from 'src/apis/estate/dto/response';
 import { getRatioDataRequest } from 'src/apis/estate';
+import { GetRatioDataResponseDto } from 'src/apis/estate/dto/response';
 import ResponseDto from 'src/apis/response.dto';
 
-ChartJS.register (
+ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
@@ -18,25 +18,18 @@ ChartJS.register (
     Legend
 );
 
-//                      component                       //
+//                    component                    //
 export default function Ratio() {
 
-    const returnOptions = {responsive: false,};
-
-    const leaseRatioOptions = {
-        responsive: false,
-        
-    };
-
-    const monthRentRatioOptions = {
-        responsive: false,
-        
-    };
+    const returnOptions = {responsive: false};
+    const leaseRatioOptions = {responsive: false};
+    const monthRentRatioOptions = {responsive: false};
     
-    //                      state                      //
+    //                    state                    //
     const [cookies] = useCookies();
 
     const [selectLocal, setSelectLocal] = useState<string>('');
+
     const [yearMonth, setYearMonth] = useState<string[]>([]);
 
     const [return40, setReturn40] = useState<number[]>([]);
@@ -54,21 +47,21 @@ export default function Ratio() {
     const [monthRentRatio6085, setMonthRentRatio6085] = useState<number[]>([]);
     const [monthRentRatio85, setMonthRentRatio85] = useState<number[]>([]);
 
-    //                      function                      //
-    const getRatioDataResponse = (result: GetRatioDataResponseDto | Response | null) => {
+    //                    function                    //
+    const getRatioDataResponse = (result: GetRatioDataResponseDto | ResponseDto | null) => {
 
         const message = 
-            !result ? '서버에 문제가 있습니다.' : 
+            !result ? '서버에 문제가 있습니다.' :
             result.code === 'VF' ? '잘못된 지역입니다.' :
             result.code === 'AF' ? '인증에 실패했습니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : ''; 
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
         if (!result || result.code !== 'SU') {
             alert(message);
             return;
         }
 
-        const {
+        const { 
             yearMonth,
             return40, return4060, return6085, return85,
             leaseRatio40, leaseRatio4060, leaseRatio6085, leaseRatio85,
@@ -91,165 +84,165 @@ export default function Ratio() {
         setMonthRentRatio4060(monthRentRatio4060);
         setMonthRentRatio6085(monthRentRatio6085);
         setMonthRentRatio85(monthRentRatio85);
-        
-        
 
     };
 
-    //                      event handler                      //
+    //                    event handler                    //
     const onLocalChangeHandler = (selectLocal: string) => {
         setSelectLocal(selectLocal);
     };
 
     const onSearchClickHandler = () => {
-        if (!selectLocal || !cookies.accessToken) return; 
+        if (!selectLocal || !cookies.accessToken) return;
         getRatioDataRequest(selectLocal, cookies.accessToken).then(getRatioDataResponse);
     };
 
     const returnData = {
         labels: yearMonth,
-        datasets: [{
-            label: '40 이하',
-            data: return40,
-            borderColor: 'rgba(0, 203, 93, 1)',
-            backgroundColor: 'rgba(0, 203, 93, 1)',
+        datasets: [
+            {
+                label: '40 이하',
+                data: return40,
+                borderColor: 'rgba(58, 87, 232, 1)',
+                backgroundColor: 'rgba(58, 87, 232, 1)'
             },
             {
                 label: '40 초과 60 이하',
                 data: return4060,
-                borderColor: 'rgba(58, 87, 232, 1)',
-                backgroundColor: 'rgba(58, 87, 232, 1)',
-
-                
+                borderColor: 'rgba(0, 203, 93, 1)',
+                backgroundColor: 'rgba(0, 203, 93, 1)'
             },
             {
                 label: '60 초과 85 이하',
                 data: return6085,
                 borderColor: 'rgba(255, 168, 0, 1)',
-                backgroundColor: 'rgba(255, 168, 0, 1)',
+                backgroundColor: 'rgba(255, 168, 0, 1)'
             },
             {
                 label: '85 초과',
                 data: return85,
                 borderColor: 'rgba(255, 84, 64, 1)',
-                backgroundColor: 'rgba(255, 84, 64, 1)',
-            }
-        ]     
+                backgroundColor: 'rgba(255, 84, 64, 1)'
+            },
+        ]
     };
-    
+
     const leaseRatioData = {
         labels: yearMonth,
-        datasets: [{
-            label: '40 이하',
-            data: leaseRatio40,
-            borderColor: 'rgba(0, 203, 93, 1)',
-            backgroundColor: 'rgba(0, 203, 93, 1)',
+        datasets: [
+            {
+                label: '40 이하',
+                data: leaseRatio40,
+                borderColor: 'rgba(58, 87, 232, 1)',
+                backgroundColor: 'rgba(58, 87, 232, 1)'
             },
             {
                 label: '40 초과 60 이하',
                 data: leaseRatio4060,
-                borderColor: 'rgba(58, 87, 232, 1)',
-                backgroundColor: 'rgba(58, 87, 232, 1)',
-
-                
+                borderColor: 'rgba(0, 203, 93, 1)',
+                backgroundColor: 'rgba(0, 203, 93, 1)'
             },
             {
                 label: '60 초과 85 이하',
                 data: leaseRatio6085,
                 borderColor: 'rgba(255, 168, 0, 1)',
-                backgroundColor: 'rgba(255, 168, 0, 1)',
+                backgroundColor: 'rgba(255, 168, 0, 1)'
             },
             {
                 label: '85 초과',
                 data: leaseRatio85,
                 borderColor: 'rgba(255, 84, 64, 1)',
-                backgroundColor: 'rgba(255, 84, 64, 1)',
-            }
-        ]     
+                backgroundColor: 'rgba(255, 84, 64, 1)'
+            },
+        ]
     };
-    
+
     const monthRentRatioData = {
         labels: yearMonth,
-        datasets: [{
-            label: '40 초과',
-            data: monthRentRatio40,
-            borderColor: 'rgba(0, 203, 93, 1)',
-            backgroundColor: 'rgba(0, 203, 93, 1)',
+        datasets: [
+            {
+                label: '40 이하',
+                data: monthRentRatio40,
+                borderColor: 'rgba(58, 87, 232, 1)',
+                backgroundColor: 'rgba(58, 87, 232, 1)'
             },
             {
                 label: '40 초과 60 이하',
                 data: monthRentRatio4060,
-                borderColor: 'rgba(58, 87, 232, 1)',
-                backgroundColor: 'rgba(58, 87, 232, 1)',
-
-                
+                borderColor: 'rgba(0, 203, 93, 1)',
+                backgroundColor: 'rgba(0, 203, 93, 1)'
             },
             {
                 label: '60 초과 85 이하',
                 data: monthRentRatio6085,
                 borderColor: 'rgba(255, 168, 0, 1)',
-                backgroundColor: 'rgba(255, 168, 0, 1)',
+                backgroundColor: 'rgba(255, 168, 0, 1)'
             },
             {
                 label: '85 초과',
                 data: monthRentRatio85,
                 borderColor: 'rgba(255, 84, 64, 1)',
-                backgroundColor: 'rgba(255, 84, 64, 1)',
-            }
-        ]     
+                backgroundColor: 'rgba(255, 84, 64, 1)'
+            },
+        ]
     };
 
-    //                      render                      //
-    const returnFlag = !!return40.length && !!return4060.length && !!return6085.length && !!return85.length;
-    const leaseRatioFlag = !!leaseRatio40.length && !!leaseRatio4060.length && !!leaseRatio6085.length && !!leaseRatio85.length;
-    const monthRentRatioFlag = !!monthRentRatio40.length && !!monthRentRatio4060.length && !!monthRentRatio6085.length && !!monthRentRatio85.length;
-
+    //                    render                    //
+    const returnFlag = 
+        !!return40.length && !!return4060.length && 
+        !!return6085.length && !!return85.length;
+    const leaseRatioFlag = 
+        !!leaseRatio40.length && !!leaseRatio4060.length && 
+        !!leaseRatio6085.length && !!leaseRatio85.length;
+    const monthRentRatioFlag = 
+        !!monthRentRatio40.length && !!monthRentRatio4060.length && 
+        !!monthRentRatio6085.length && !!monthRentRatio85.length;
     const buttonClass = selectLocal ? 'primary-button' : 'disable-button';
-    return ( 
+    return (
         <div id='local-wrapper'>
             <div className='local-top'>
                 <div className='local-search-box'>
                     <SelectBox value={selectLocal} onChange={onLocalChangeHandler} />
-                <div className={buttonClass} onClick={onSearchClickHandler}>검색</div>
-            </div>    
+                    <div className={buttonClass} onClick={onSearchClickHandler}>검색</div>
+                </div>
                 <div className='local-origin-text'>데이터 출처: KOSIS</div>
             </div>
             { !returnFlag && !leaseRatioFlag && !monthRentRatioFlag &&
-                <div className='local-no-data-text'>검색 결과가 없습니다.</div>
+            <div className='local-no-data-text'>검색 결과가 없습니다.</div> 
             }
-            {returnFlag &&
+            { returnFlag &&
             <div className='local-card'>
                 <div className='local-card-title-box'>
                     <div className='local-card-title'>수익률 평균</div>
                     <div className='local-card-unit'>(단위: %)</div>
                 </div>
                 <div className='local-card-chart-box'>
-                    <Line width={'1086px'} height={'238px'} options={returnOptions} data={returnData}/>
+                    <Line width={'1086px'} height={'238px'} options={returnOptions} data={returnData} />
                 </div>
             </div>
             }
-            {leaseRatioFlag &&
+            { leaseRatioFlag &&
             <div className='local-card'>
-            <div className='local-card-title-box'>
+                <div className='local-card-title-box'>
                     <div className='local-card-title'>매매가격 대비 전세 비율</div>
                     <div className='local-card-unit'>(단위: %)</div>
                 </div>
                 <div className='local-card-chart-box'>
-                    <Bar width={'1086px'} height={'238px'} options={leaseRatioOptions} data={leaseRatioData}/>
+                    <Bar width={'1086px'} height={'238px'} options={leaseRatioOptions} data={leaseRatioData} />
                 </div>
             </div>
-            }   
-            {monthRentRatioFlag &&
+            }
+            { monthRentRatioFlag && 
             <div className='local-card'>
-            <div className='local-card-title-box'>
+                <div className='local-card-title-box'>
                     <div className='local-card-title'>전세 가격 대비 월세 보증금 비율</div>
                     <div className='local-card-unit'>(단위: %)</div>
                 </div>
                 <div className='local-card-chart-box'>
-                    <Line width={'1086px'} height={'238px'} options={monthRentRatioOptions} data={monthRentRatioData}/>
+                    <Line width={'1086px'} height={'238px'} options={monthRentRatioOptions} data={monthRentRatioData} />
                 </div>
             </div>
-            }   
+            }
         </div>
-    );
+    )
 }

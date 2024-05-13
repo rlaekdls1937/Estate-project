@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import './style.css'
 import SelectBox from 'src/components/SelectBox';
 import { CategoryScale, Chart as ChartJS, LineElement, LinearScale, PointElement, Tooltip } from 'chart.js';
@@ -8,14 +8,15 @@ import { getLocalDataRequest } from 'src/apis/estate';
 import { GetLocalDataResponseDto } from 'src/apis/estate/dto/response';
 import ResponseDto from 'src/apis/response.dto';
 
-ChartJS.register (
+ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
     Tooltip
 );
-//                      component                       //
+
+//                    component                    //
 export default function Local() {
 
     const saleOptions = {
@@ -30,7 +31,7 @@ export default function Local() {
         responsive: false,
     };
 
-    //                      state                      //
+    //                    state                    //
     const [cookies] = useCookies();
     const [selectLocal, setSelectLocal] = useState<string>('');
     const [yearMonth, setYearMonth] = useState<string[]>([]);
@@ -38,7 +39,7 @@ export default function Local() {
     const [lease, setLease] = useState<number[]>([]);
     const [monthRent, setMonthRent] = useState<number[]>([]);
 
-    //                      function                      //
+    //                    function                    //
     const getLocalDataResponse = (result: GetLocalDataResponseDto | ResponseDto | null) => {
 
         const message = 
@@ -47,7 +48,7 @@ export default function Local() {
             result.code === 'AF' ? '인증에 실패했습니다.' :
             result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
-        if (!result || result.code !== 'SU'){
+        if (!result || result.code !== 'SU') {
             alert(message);
             return;
         }
@@ -60,7 +61,7 @@ export default function Local() {
 
     };
 
-    //                      event handler                      //
+    //                    event handler                    //
     const onLocalChangeHandler = (selectLocal: string) => {
         setSelectLocal(selectLocal);
     };
@@ -76,38 +77,39 @@ export default function Local() {
             label: '매매 평균',
             data: sale,
             borderColor: 'rgba(58, 87, 232, 1)',
-            backgroundColor: 'rgba(58, 87, 232, 1)',
-        }]     
+            backgroundColor: 'rgba(58, 87, 232, 1)'
+        }]
     };
-    
+
     const leaseData = {
         labels: yearMonth,
         datasets: [{
-            label: '매매 평균',
+            label: '전세 평균',
             data: lease,
             borderColor: 'rgba(58, 87, 232, 1)',
-            backgroundColor: 'rgba(58, 87, 232, 1)',
-        }]     
+            backgroundColor: 'rgba(58, 87, 232, 1)'
+        }]
     };
-    
+
     const monthRentData = {
         labels: yearMonth,
         datasets: [{
             label: '월세 보증금 평균',
             data: monthRent,
             borderColor: 'rgba(58, 87, 232, 1)',
-            backgroundColor: 'rgba(58, 87, 232, 1)',
-        }]     
+            backgroundColor: 'rgba(58, 87, 232, 1)'
+        }]
     };
 
-    //                      render                      //
-    return ( 
+    //                    render                    //
+    const buttonClass = selectLocal ? 'primary-button' : 'disable-button';
+    return (
         <div id='local-wrapper'>
             <div className='local-top'>
                 <div className='local-search-box'>
                     <SelectBox value={selectLocal} onChange={onLocalChangeHandler} />
-                <div className='primary-button' onClick={onSearchClickHandler}>검색</div>
-            </div>    
+                    <div className={buttonClass} onClick={onSearchClickHandler}>검색</div>
+                </div>
                 <div className='local-origin-text'>데이터 출처: KOSIS</div>
             </div>
             { !sale.length && !lease.length && !monthRent.length &&
@@ -124,25 +126,25 @@ export default function Local() {
                 </div>
             </div>
             }
-            { lease.length !== 0 &&
+            { lease.length !== 0 && 
             <div className='local-card'>
-            <div className='local-card-title-box'>
+                <div className='local-card-title-box'>
                     <div className='local-card-title'>전세 평균</div>
                     <div className='local-card-unit'>(단위: 천원)</div>
                 </div>
                 <div className='local-card-chart-box'>
-                    <Line  width={'1086px'} height={'238px'} options={leaseOptions} data={leaseData} />
+                    <Line width={'1086px'} height={'238px'} options={leaseOptions} data={leaseData} />
                 </div>
             </div>
             }
-            {monthRent.length !== 0 && 
+            { monthRent.length !== 0 &&
             <div className='local-card'>
-            <div className='local-card-title-box'>
+                <div className='local-card-title-box'>
                     <div className='local-card-title'>월세 평균</div>
                     <div className='local-card-unit'>(단위: 천원)</div>
                 </div>
                 <div className='local-card-chart-box'>
-                    <Line  width={'1086px'} height={'238px'} options={monthRentOptions} data={monthRentData} />
+                    <Line width={'1086px'} height={'238px'} options={monthRentOptions} data={monthRentData} />
                 </div>
             </div>
             }

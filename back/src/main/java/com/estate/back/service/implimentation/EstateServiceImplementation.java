@@ -17,24 +17,28 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class EstateServiceImplementation implements EstateService{
+public class EstateServiceImplementation implements EstateService {
     
     private final EstateRepository estateRepository;
 
     @Override
     public ResponseEntity<? super GetLocalDataResponseDto> getLocalData(String local) {
+        
         try {
+
             List<GetLocalDataResultSet> resultSets = estateRepository.getLocalData(local);
             return GetLocalDataResponseDto.success(resultSets);
-            
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
+
     }
 
     @Override
     public ResponseEntity<? super GetRatioDataResponseDto> getRatioData(String local) {
+        
         try {
             
             List<GetRatioDataResultSet> resultSets = estateRepository.getRatioData(local);
@@ -44,5 +48,7 @@ public class EstateServiceImplementation implements EstateService{
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
+
     }
+
 }

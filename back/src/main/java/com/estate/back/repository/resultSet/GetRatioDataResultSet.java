@@ -1,7 +1,5 @@
 package com.estate.back.repository.resultSet;
 
-import java.util.List;
-
 public interface GetRatioDataResultSet {
     
     String getYearMonth();
